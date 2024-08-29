@@ -7,17 +7,15 @@ def hash_password(password):
     """
     returns a salted, hashed password, which is a byte string.
     """
-    password = password.encode('utf-8')  # Convert to Byte
-    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
-    return hashed_password
+    if password:
+        password = password.encode('utf-8')  # Convert to Byte
+        hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+        return hashed_password
 
 
 def is_valid(hashed_password: bytes, password: str) -> bool:
     """
     validate that the provided password matches the hashed password.
     """
-    password = password.encode('utf-8')
-    if bcrypt.checkpw(password, hashed_password):
-        return True
-    else:
-        return False
+    if hashed_password and password:
+        return bcrypt.checkpw(str.encode(password), hashed_password)
