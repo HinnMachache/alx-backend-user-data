@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-
+"""
+    Encrpyt Password
+"""
 import bcrypt
 
 
-def hash_password(password):
+def hash_password(password: str) -> bytes:
     """
     returns a salted, hashed password, which is a byte string.
     """
