@@ -1,0 +1,1 @@
+Containing Auth Template Class

@@ -25,20 +25,6 @@ elif auth_type == 'basic':
     auth = BasicAuth()
 
 
-@app.before_request
-def before_request() -> None:
-    path = ['/api/v1/status/', '/api/v1/unauthorized/',
-            '/api/v1/forbidden/']
-    if not auth:
-        return None
-    if not auth.require_auth(request.path, path):
-        return None
-    if not auth.authorization_header(request):
-        abort(401)
-    if not auth.current_user(request):
-        abort(403)
-
-
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
@@ -57,6 +43,22 @@ def forbidden(error) -> str:
     """No Access
     """
     return jsonify({"error": "Forbidden"}), 403
+
+
+@app.before_request
+def before_request() -> None:
+    """ Before request
+    """
+    paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+             '/api/v1/forbidden/']
+    if not auth:
+        return None
+    if not auth.require_auth(request.path, paths):
+        return None
+    if not auth.authorization_header(request):
+        abort(401)
+    if not auth.current_user(request):
+        abort(403)
 
 
 if __name__ == "__main__":
