@@ -21,7 +21,7 @@ if auth_type == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
 elif auth_type == 'basic':
-    from api.v1.auth.auth import BasicAuth
+    from api.v1.auth.basic_auth import BasicAuth
     auth = BasicAuth()
 
 
@@ -33,7 +33,7 @@ def not_found(error) -> str:
 
 
 @app.errorhandler(401)
-def not_authorized(error) -> str:
+def unauthorized(error) -> str:
     """Not Authorized"""
     return jsonify({"error": "Unauthorized"}), 401
 
