@@ -1,12 +1,15 @@
+#!/usr/bin/env python3
+
 from sqlalchemy import String, Column, Integer
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 
 class User(Base):
-    # change import statement -> from sqlalchemy.ext.declarative
-    # import declarative_base
+    """ USER Class with table and column
+    """
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)

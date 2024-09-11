@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from user import User
