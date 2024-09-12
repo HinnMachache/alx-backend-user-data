@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+USER module
+"""
 
 from sqlalchemy import String, Column, Integer
 from sqlalchemy.ext.declarative import declarative_base
@@ -10,7 +13,7 @@ class User(Base):
     """ USER Class with table and column
     """
 
-    __tablename__ = "users"
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
     email = Column(String(250), nullable=False)
