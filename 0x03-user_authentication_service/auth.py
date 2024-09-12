@@ -10,7 +10,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from typing import Optional
 
 
-def _hashed_password(password: str) -> bytes:
+def _hash_password(password: str) -> bytes:
     """ Generate user's hashed password
     Return:
         User's hashed password
@@ -32,7 +32,7 @@ class Auth:
             self._db.find_user_by(email=email)
             raise ValueError(f"User {email} already exists")
         except NoResultFound:
-            hash_pw = _hashed_password(password)
+            hash_pw = _hash_password(password)
             new_user = self._db.add_user(email, hash_pw)
             return new_user
 
@@ -110,7 +110,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(reset_token=reset_token)
-            hashed_pw = _hashed_password(password)
+            hashed_pw = _hash_password(password)
             self._db.update_user(user.id, hashed_pw=hashed_pw,
                                  reset_token=None)
             return None
