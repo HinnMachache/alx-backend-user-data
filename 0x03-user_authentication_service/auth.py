@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+"""
+Auth Module
+"""
 from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from user import User
@@ -59,3 +61,57 @@ class Auth:
         self._db.update_user(user.id, session_id=session_id)
 
         return session_id
+
+    def get_user_from_session_id(self, session_id: str) -> Optional[User]:
+        """ Import statement of Optional"""
+        """ gets a user based on Session ID
+        Return:
+            User if Session ID exists or None if not exist
+        """
+        if not session_id:
+            return None
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+            return user
+        except NoResultFound:
+            return None
+
+    def destroy_session(self, user_id: int) -> None:
+        """ Destroys the Session ID
+        Return:
+            None
+        """
+        try:
+            user = self._db.find_user_by(id=user_id)
+            self._db.update_user(user.id, session_id=None)
+            return None
+        except NoResultFound:
+            pass
+
+    def get_reset_password_token(self, email: str) -> str:
+        """ Creates a user Token
+        Return:
+            Returns a str token
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+            reset_token = self._generate_uuid()
+            self._db.update_user(user.id, reset_token=reset_token)
+            return reset_token
+        except NoResultFound:
+            raise ValueError
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """ Updates Password to new password and
+        resets user token
+        Return:
+            None
+        """
+        try:
+            user = self._db.find_user_by(reset_token=reset_token)
+            hashed_pw = _hashed_password(password)
+            self._db.update_user(user.id, hashed_pw=hashed_pw,
+                                 reset_token=None)
+            return None
+        except NoResultFound:
+            raise ValueError
