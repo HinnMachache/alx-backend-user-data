@@ -6,7 +6,8 @@ from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from user import User
 from uuid import uuid4
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
+from typing import Optional
 
 
 def _hashed_password(password: str) -> bytes:
